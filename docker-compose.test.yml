@@ -10,7 +10,7 @@ services:
     mem_limit: 512m
     cpus: 1
   eddi:
-    build: ./eddi
+    build: .
     environment:
       MONGODB_CONNECTIONSTRING: mongodb://eddi:testpassword1234567890@mongodb:27017/eddi?authSource=admin
       EDDI_PASSWORD: localtestpassword123
