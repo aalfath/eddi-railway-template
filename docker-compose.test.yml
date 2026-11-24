@@ -1,0 +1,23 @@
+# Local test only (not used by Railway): the same two services the template deploys.
+services:
+  mongodb:
+    image: mongo:7.0.43@sha256:1f995ad6fdb93244a1addab1b58f934a0bc2f5643c38e02f5e9d7f0c7d227a7b
+    command: ["mongod", "--ipv6", "--bind_ip", "::,0.0.0.0", "--wiredTigerCacheSizeGB", "0.25", "--setParameter", "diagnosticDataCollectionEnabled=false"]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: eddi
+      MONGO_INITDB_ROOT_PASSWORD: testpassword1234567890
+    volumes: [mongodb-db:/data/db]
+    mem_limit: 512m
+    cpus: 1
+  eddi:
+    build: ./eddi
+    environment:
+      MONGODB_CONNECTIONSTRING: mongodb://eddi:testpassword1234567890@mongodb:27017/eddi?authSource=admin
+      EDDI_PASSWORD: localtestpassword123
+      EDDI_VAULT_MASTER_KEY: localtestvaultkey0123456789
+    ports: ["8080:8080"]
+    mem_limit: 512m
+    cpus: 1
+    depends_on: [mongodb]
+volumes:
+  mongodb-db:
