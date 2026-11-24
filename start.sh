@@ -35,6 +35,13 @@ export QUARKUS_HTTP_PORT=7070
 # way in, so turn it off (the Host header must stay public for EDDI's own
 # same-origin check on browser writes).
 export QUARKUS_HTTP_HOST_VALIDATION_REQUIRE_LOCALHOST=false
+# Caddy terminates nothing but forwards Railway's X-Forwarded-Proto/-For. Let
+# Quarkus read them (only Caddy on loopback can reach EDDI), so the Manager's
+# https:// origin counts as same-origin and absolute URLs use https.
+export QUARKUS_HTTP_PROXY_PROXY_ADDRESS_FORWARDING=true
+export QUARKUS_HTTP_PROXY_ALLOW_X_FORWARDED=true
+export QUARKUS_HTTP_PROXY_ENABLE_FORWARDED_HOST=false
+export QUARKUS_HTTP_PROXY_TRUSTED_PROXIES=127.0.0.1
 
 # Size the JVM to the service: Railway shows the host's CPUs (32+) inside a
 # 1 vCPU service, and the image's 75 % heap leaves too little for metaspace at 0.5 GB.
