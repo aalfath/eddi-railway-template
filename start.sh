@@ -30,6 +30,11 @@ export QUARKUS_OIDC_TENANT_ENABLED=false
 export EDDI_SECURITY_UNAUTHENTICATED_ALLOWED_HOSTS='*'
 export EDDI_DATASTORE_TYPE="${EDDI_DATASTORE_TYPE:-mongodb}"
 export QUARKUS_HTTP_PORT=7070
+# Quarkus switches on localhost-only Host validation when it binds to 127.0.0.1,
+# which answers 400 to the public Host that Caddy passes on. Caddy is the only
+# way in, so turn it off (the Host header must stay public for EDDI's own
+# same-origin check on browser writes).
+export QUARKUS_HTTP_HOST_VALIDATION_REQUIRE_LOCALHOST=false
 
 # Size the JVM to the service: Railway shows the host's CPUs (32+) inside a
 # 1 vCPU service, and the image's 75 % heap leaves too little for metaspace at 0.5 GB.
